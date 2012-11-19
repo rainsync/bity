@@ -103,6 +103,9 @@ ty('invite', function(uid, raceNo, invites, cb) {
                     cb(null);
                 }
             );
+
+            for(var i in invites)
+                me['join'](invites[i], raceNo, function(){});
         }
     ],
 
