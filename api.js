@@ -438,9 +438,9 @@ var api = {
     },
 
     'cache-clear': function(arg, cb) {
-        redisStore.keys('cache.*', function(err, res) {
+        db.redis.keys('cache.*', function(err, res) {
             for(var i in res)
-                redisStore.del(res[i]);
+                db.redis.del(res[i]);
         });
 
         cb({
