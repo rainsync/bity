@@ -424,7 +424,10 @@ var api = {
             async.parallel(funcs, function(err, results) {
                 race.metadata(arg._uid, arg.no, metadata);
                 results.state = 0;
-                cb(results);
+                cb({
+                    state: 0,
+                    summary: results
+                });
             });
         });
     },
