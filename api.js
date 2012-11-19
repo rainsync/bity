@@ -367,13 +367,13 @@ var api = {
 
         async.parallel({
             metadata: function(cb) {
-                race.metadata(arg._uid, arg.no, function(metadata) {
+                race.metadata(arg._uid, arg._usr.raceno, function(metadata) {
                     cb(null, metadata);
                 });
             },
 
             participant: function(cb) {
-                race.participant(arg.no, function(participant) {
+                race.participant(arg._usr.raceno, function(participant) {
                     cb(null, participant);
                 });
             }
@@ -394,7 +394,7 @@ var api = {
 
                             async.waterfall([
                                 function(cb) {
-                                    race.record.length(uid, arg.no, function(length) {                                        if(length > metadata.last[uid])
+                                    race.record.length(uid, arg._usr.raceno, function(length) {                                        if(length > metadata.last[uid])
                                             cb(null, length);
                                         else
                                             cb(true);
@@ -402,7 +402,7 @@ var api = {
                                 },
 
                                 function(length, cb) {
-                                    race.record.range(uid, arg.no, metadata.last[uid], length, function(res) {
+                                    race.record.range(uid, arg._usr.raceno, metadata.last[uid], length, function(res) {
                                         cb(null, res);
                                     });
 
@@ -422,7 +422,7 @@ var api = {
             }
 
             async.parallel(funcs, function(err, results) {
-                race.metadata(arg._uid, arg.no, metadata);
+                race.metadata(arg._uid, arg._usr.raceno, metadata);
                 cb({
                     state: 0,
                     summary: results
