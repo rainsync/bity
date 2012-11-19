@@ -465,6 +465,13 @@ var api = {
             state: 0,
             devicetoken: device.token.toString('base64')
         })
+    },
+
+    'race-clear': function(arg, cb) {
+        db.mysql.query("TRUNCATE TABLE  `race`");
+        db.mysql.query("TRUNCATE TABLE  `race_participant`");
+        db.mysql.query("UPDATE `account` SET `raceno` = '0'");
+        api['cache-clear'](arg, function(){});
     }
 };
 
