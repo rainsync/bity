@@ -472,6 +472,14 @@ var api = {
         db.mysql.query("TRUNCATE TABLE  `race_participant`");
         db.mysql.query("UPDATE `account` SET `raceno` = '0'");
         api['cache-clear'](arg, function(){});
+        db.redis.keys('race.*', function(err, res) {
+            for(var i in res)
+                db.redis.del(res[i]);
+        });
+
+        cb({
+            state: 0
+        });
     }
 };
 
