@@ -138,7 +138,7 @@ ty('join', function(uid, raceNo, cb) {
             account.update(uid, {raceno: raceNo});
 
             db.mysql.query(
-                "UPDATE `race_participant` SET `state` = '1' WHERE `no` = ?, `uid` = ? ",
+                "UPDATE `race_participant` SET `state` = '1' WHERE `no` = ? AND `uid` = ? ",
                 [raceNo, uid],
                 function(err, results, fields) {
                     cb(null);
