@@ -196,7 +196,7 @@ ty('end', function(uid, raceNo, cb) {
 
 ty('participant', function(raceNo, cb) {
     db.mysql.query(
-        "SELECT `uid` FROM `race_participant` WHERE `no` = ?",
+        "SELECT `uid` FROM `race_participant` WHERE `no` = ? AND `state` = '1'",
         [raceNo],
         function(err, results, fields) {
             var res = [];
