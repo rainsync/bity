@@ -320,6 +320,29 @@ var api = {
         });
     },
 
+    'race-end': function(arg, cb) {
+        if(arg._usr.raceno == 0) {
+            cb({
+                state: 1,
+                msg: 'RACE NOT JOINED'
+            });
+            
+            return;
+        }
+
+        race.end(arg._uid, arg._usr.raceno, function(err) {
+            if(err)
+                cb({
+                    state: 1,
+                    msg: err
+                });
+            else
+                cb({
+                    state: 0
+                });
+        });
+    },
+
     'race-info': function(arg, cb) {
         if(arg._usr.raceno == 0) {
             cb({
