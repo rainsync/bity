@@ -377,7 +377,7 @@ var api = {
             ],
 
             function(err, res) {
-                var result = {};
+                var result = [];
 
                 for(var i in res)
                     if(res[i].uid == arg._uid)
