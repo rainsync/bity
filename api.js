@@ -354,6 +354,10 @@ var api = {
             async.waterfall([
                 function(cb) {
                     race.participant(arg._usr.raceno, function(res) {
+                        for(var i in res)
+                            if(res[i].uid == arg._uid)
+                                delete res[i];
+
                         cb(null, res);
                     });
                 },
@@ -376,17 +380,7 @@ var api = {
                 }
             ],
 
-            function(err, res) {
-                var result = [];
-
-                for(var i in res)
-                    if(res[i].uid == arg._uid)
-                        result.push(res[i]);
-
-                for(var i in res)
-                    if(res[i].uid != arg._uid)
-                        result.push(res[i]);
-
+            function(err, result) {
                 cb({
                     state: 0,
                     participants: result
