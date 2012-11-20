@@ -346,9 +346,11 @@ var api = {
     'race-info': function(arg, cb) {
         if(arg._usr.raceno == 0) {
             cb({
-                state: 0,
-                participants: []
+                state: 1,
+                msg: 'RACE NOT JOINED'
             });
+
+            return;
         }
         else {
             async.waterfall([
