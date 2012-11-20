@@ -390,6 +390,15 @@ var api = {
     },
 
     'race-summary': function(arg, cb) {
+        if(arg._usr.raceno == 0) {
+            cb({
+                state: 1,
+                msg: 'RACE NOT JOINED'
+            });
+
+            return;
+        }
+
         var metadata, funcs;
 
         async.parallel({
