@@ -376,10 +376,20 @@ var api = {
                 }
             ],
 
-            function(err, results) {
+            function(err, res) {
+                var result = {};
+
+                for(var i in res)
+                    if(res[i].uid == arg._uid)
+                        result.push(res[i]);
+
+                for(var i in res)
+                    if(res[i].uid != arg._uid)
+                        result.push(res[i]);
+
                 cb({
                     state: 0,
-                    participants: results
+                    participants: result
                 });
             });
         }
