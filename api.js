@@ -326,7 +326,7 @@ var api = {
                 state: 1,
                 msg: 'RACE NOT JOINED'
             });
-            
+
             return;
         }
 
@@ -631,7 +631,7 @@ ty(function() {
             res.send({state: 1, msg: 'INVALID TYPE'});
     });
 
-    server = http.createServer(app).listen(80);
+    server = http.createServer(app).listen(8080);
 
     ty('model', api);
 })
