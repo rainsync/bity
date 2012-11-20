@@ -412,9 +412,6 @@ var api = {
                 {
                     (function(uid){
                         funcs[uid] = function(cb) {
-                            if("undefined" == typeof metadata.last) metadata.last = {};
-                            if("undefined" == typeof metadata.last[uid]) metadata.last[uid] = 0;
-
                             async.waterfall([
                                 function(cb) {
                                     race.record.length(uid, arg._usr.raceno, function(length) {                                        if(length > metadata.last[uid])
