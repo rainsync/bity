@@ -355,7 +355,7 @@ var api = {
                 function(cb) {
                     race.participant(arg._usr.raceno, function(res) {
                         for(var i in res)
-                            if(res[i].uid == arg._uid)
+                            if(res[i] == arg._uid)
                                 delete res[i];
 
                         cb(null, res);
