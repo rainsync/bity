@@ -165,6 +165,35 @@ ty('join', function(uid, raceNo, cb) {
     });
 });
 
+ty('end', function(uid, raceNo, cb) {
+    async.waterfall([
+        function(cb) {
+            db.mysql.query(
+                "UPDATE `account` SET `raceno` = '0' WHERE `uid` = ?",
+                [uid]
+            );
+
+            cb(null);
+        },
+
+        function(cb) {
+            db.mysql.query(
+                "UPDATE `race_participant` SET `state` = '2' WHERE `no` = ? AND `uid` = ?",
+                [raceNo, uid]
+            );
+
+            cb(null);
+        }
+    ],
+
+    function(err) {
+        if(err)
+            cb(err);
+        else
+            cb(null);
+    })
+});
+
 ty('participant', function(raceNo, cb) {
     db.mysql.query(
         "SELECT `uid` FROM `race_participant` WHERE `no` = ?",
