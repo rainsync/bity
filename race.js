@@ -148,12 +148,34 @@ ty('join', function(uid, raceNo, cb) {
 
         function(cb) {
             var metadata = {
-
+                last: {}
             };
 
-            db.redis.set(dot('race', raceNo, uid), JSON.stringify(metadata));
+            me['participant'](raceNo, function(uids) {
+                var funcs = [];
 
-            cb(null);
+                for(var i in uids) {
+                    (function(uid) {
+                        funcs.push(function(cb) {
+                            db.redis.llen(dot('race', raceNo, uid, 'record'), function(err, res) {
+                                cb(null, {
+                                    uid: uid,
+                                    count: res
+                                });
+                            });
+                        });
+                    })(uids[i]);
+                }
+
+                async.parallel(funcs, function(err, res) {
+                    for(var i in res) {
+                        metadata.last[res[i].uid] = res[i].count;
+                    }
+
+                    db.redis.set(dot('race', raceNo, uid), JSON.stringify(metadata));
+                    cb(null);
+                });
+            });
         }
     ],
 
