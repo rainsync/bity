@@ -403,7 +403,7 @@ var api = {
         },
 
         function(err, results) {
-            funcs = {};
+            funcs = [];
             metadata = results.metadata;
 
             for(var i in results.participant)
@@ -411,7 +411,7 @@ var api = {
                 if(results.participant[i] != arg._uid)
                 {
                     (function(uid){
-                        funcs[uid] = function(cb) {
+                        funcs.push(function(cb) {
                             async.waterfall([
                                 function(cb) {
                                     race.record.length(uid, arg._usr.raceno, function(length) {                                        if(length > metadata.last[uid])
@@ -434,9 +434,12 @@ var api = {
                                 if(err)
                                     cb(null);
                                 else
-                                    cb(null, results);
+                                    cb(null, {
+                                        uid: uid,
+                                        pos: results
+                                    });
                             });
-                        };
+                        });
                     })(results.participant[i]);
                 }
             }
