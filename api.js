@@ -424,7 +424,8 @@ var api = {
                         funcs.push(function(cb) {
                             async.waterfall([
                                 function(cb) {
-                                    race.record.length(uid, arg._usr.raceno, function(length) {                                        if(length > metadata.last[uid])
+                                    race.record.length(uid, arg._usr.raceno, function(length) {
+                                        if(length > metadata.last[uid])
                                             cb(null, length);
                                         else
                                             cb(true);
