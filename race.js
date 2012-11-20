@@ -188,32 +188,16 @@ ty('join', function(uid, raceNo, cb) {
 });
 
 ty('end', function(uid, raceNo, cb) {
-    async.waterfall([
-        function(cb) {
-            db.mysql.query(
-                "UPDATE `account` SET `raceno` = '0' WHERE `uid` = ?",
-                [uid]
-            );
+    account.update(uid, {
+        raceno: 0
+    });
 
-            cb(null);
-        },
-
-        function(cb) {
-            db.mysql.query(
-                "UPDATE `race_participant` SET `state` = '2' WHERE `no` = ? AND `uid` = ?",
-                [raceNo, uid]
-            );
-
-            cb(null);
-        }
-    ],
-
-    function(err) {
-        if(err)
-            cb(err);
-        else
-            cb(null);
-    })
+    db.mysql.query(
+        "UPDATE `race_participant` SET `state` = '2' WHERE `no` = ? AND `uid` = ?",
+        [raceNo, uid]
+    );
+    
+    cb(null);
 });
 
 ty('participant', function(raceNo, cb) {
