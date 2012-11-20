@@ -455,12 +455,19 @@ var api = {
                 }
             }
 
-            async.parallel(funcs, function(err, results) {
-                race.metadata(arg._uid, arg._usr.raceno, metadata);
+            async.parallel(funcs, function(err, res) {
+                var result = [];
+
+                for(var i in res)
+                    if(res[i])
+                        result.push(res[i]);
+
                 cb({
                     state: 0,
-                    summary: results
+                    summary: result
                 });
+
+                race.metadata(arg._uid, arg._usr.raceno, metadata);
             });
         });
     },
