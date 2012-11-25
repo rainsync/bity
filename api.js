@@ -499,6 +499,94 @@ var api = {
         });
     },
 
+    'stress-test1': function(arg, cb) { //race-record clone
+        race.record.push(0, 0, "100.123456,200,654321");
+
+        cb({
+            state: 0
+        });
+    },
+
+    'stress-test2': function(arg, cb) { //race-summary clone
+        var metadata, funcs;
+
+        async.parallel({
+            metadata: function(cb) {
+                race.metadata(0, 0, function(metadata) {
+                    cb(null, metadata);
+                });
+            },
+
+            participant: function(cb) {
+                race.participant(0, function(participant) {
+                    cb(null, participant);
+                });
+            }
+        },
+
+        function(err, results) {
+            results.metadata = {
+                last: {}
+            };
+            results.participant = [0, 0, 0, 0];
+            funcs = [];
+            metadata = results.metadata;
+
+            for(var i in results.participant)
+            {
+                {
+                    (function(uid){
+                        funcs.push(function(cb) {
+                            if("undefined" == typeof metadata.last) metadata.last = {};
+                            if("undefined" == typeof metadata.last[uid]) metadata.last[uid] = 0;
+
+                            async.waterfall([
+                                function(cb) {
+                                    race.record.length(0, 0, function(length) {
+                                        cb(null, 3);
+                                    });
+                                },
+
+                                function(length, cb) {
+                                    race.record.range(0, 0, 0, 0, function(res) {
+                                        cb(null, res);
+                                    });
+
+                                    metadata.last[uid] = length;
+                                }
+                            ],
+
+                            function(err, results) {
+                                if(err)
+                                    cb(null);
+                                else
+                                    cb(null, {
+                                        uid: uid,
+                                        pos: results
+                                    });
+                            });
+                        });
+                    })(results.participant[i]);
+                }
+            }
+
+            async.parallel(funcs, function(err, res) {
+                var result = [];
+
+                for(var i in res)
+                    if(res[i])
+                        result.push(res[i]);
+
+                cb({
+                    state: 0,
+                    summary: result
+                });
+
+                race.metadata(0, 0, metadata);
+            });
+        });
+    },
+
     'push-test': function(arg, cb) {
         //4d304e8d 06bd4e37 c1640b89 741c8705 619ebad1 95cddc2f 0b13b049 5f57d67c
         var device = apns.device('4d304e8d06bd4e37c1640b89741c8705619ebad195cddc2f0b13b0495f57d67c');
